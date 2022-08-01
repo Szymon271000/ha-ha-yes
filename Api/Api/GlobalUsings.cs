@@ -4,3 +4,5 @@ global using Newtonsoft.Json;
 global using Newtonsoft.Json.Serialization;
 global using Serilog;
 global using Serilog.Events;
+global using System.Diagnostics;
+global using Api.Middlewares;
