@@ -6,3 +6,4 @@ global using Microsoft.EntityFrameworkCore.Migrations;
 global using Api.Data.Context;
 global using Microsoft.EntityFrameworkCore.Infrastructure;
 global using System.ComponentModel.DataAnnotations.Schema;
+global using System.Linq.Expressions;
