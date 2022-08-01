@@ -1,10 +1,14 @@
 ﻿namespace Api.Data.Model.Authentication
 {
-    internal class User
+    public class User
     {
+        [Key]
         public int UserId { get; set; }
 #pragma warning disable CS8618
-        public Credentials Credentials { get; set; }
+
+        public Credentials? Credentials { get; set; }
+        [ForeignKey("Credentials")]
+        public int CredentialsID { get; set; }
 #pragma warning restore CS8618
     }
 }

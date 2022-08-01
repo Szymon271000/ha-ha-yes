@@ -2,6 +2,7 @@
 {
     public class Serial
     {
+        [Key]
         public int SerialId { get; set; }
         public string? SerialName { get; set; }
         public List<Season>? SerialSeasons { get; set; }

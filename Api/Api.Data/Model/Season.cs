@@ -2,6 +2,7 @@
 {
     public class Season
     {
+        [Key]
         public int SeasonId { get; set; }
         public int? SeasonNumber { get; set; }
         public Serial? SeasonSerial { get; set; }

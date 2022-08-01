@@ -2,6 +2,7 @@
 {
     public class Episode
     {
+        [Key]
         public int EpisodeId { get; set; }
         public int? EpisodeNumber { get; set; }
         public string? EpisodeName { get; set; }
