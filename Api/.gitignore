@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Add migration snapshoots From EFcore
-/Migrations/
-/Migrations/.
+Migrations/
+Migrations/.
 */Migrations
 # User-specific files
 *.rsuser
