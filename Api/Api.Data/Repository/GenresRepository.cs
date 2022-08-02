@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Api.Data.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Api.Data.Repository
 {
-    public class GenresRepository : IBaseRepository<Genre>
+    public class GenresRepository : IBaseRepository<Genre>, IGenresRepository
     {
         private ApiContext _context;
         public GenresRepository(ApiContext injectedContext)

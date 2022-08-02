@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Api.Data.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Api.Data.Repository
 {
-    public class ActorsRepository : IBaseRepository<Actor>
+    public class ActorsRepository : IBaseRepository<Actor>, IActorsRepository
     {
         private ApiContext _context;
         public ActorsRepository(ApiContext injectedContext)
