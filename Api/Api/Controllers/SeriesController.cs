@@ -1,18 +1,13 @@
-﻿
-
-
-using Api.Data.Repository.Interfaces;
-
-namespace Api.Controllers
+﻿namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SeriesController : ControllerBase
     {
-        private readonly IBaseRepository<Serie> _seriesRepository;
+        private readonly ISeriesRepository _seriesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(IBaseRepository<Serie> seriesRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _mapper = mapper;

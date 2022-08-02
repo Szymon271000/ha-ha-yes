@@ -1,17 +1,12 @@
-﻿using Api.Data.Model.Authentication;
-using Api.Data.Repository;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
-namespace Api.Controllers
+﻿namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
         public IConfiguration _configuration;
-        private readonly IBaseRepository<User> _userRepository;
-        public LoginController(IConfiguration config, IBaseRepository<User> userRepository)
+        private readonly IUsersRepository _userRepository;
+        public LoginController(IConfiguration config, IUsersRepository userRepository)
         {
             _configuration = config;
             _userRepository = userRepository;

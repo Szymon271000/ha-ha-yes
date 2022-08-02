@@ -16,3 +16,7 @@ global using Api.Data.Model;
 global using Api.DTOs.SeriesDTOs;
 global using AutoMapper;
 global using Api.Data.Repository;
+global using Api.Data.Model.Authentication;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using Api.Data.Repository.Interfaces;
