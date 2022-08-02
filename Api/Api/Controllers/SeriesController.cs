@@ -1,19 +1,14 @@
-﻿
-
-
-using Api.Data.Repository.Interfaces;
-
-namespace Api.Controllers
+﻿namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SeriesController : ControllerBase
     {
-        private readonly IBaseRepository<Serie> _seriesRepository;
+        private readonly ISeriesRepository _seriesRepository;
         private readonly IBaseRepository<Genre> _genresRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(IBaseRepository<Serie> seriesRepository, IBaseRepository<Genre> genresRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository,  IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
@@ -71,7 +66,6 @@ namespace Api.Controllers
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
         }
 
-
         /// <summary>
         /// Add genre to serie
         /// </summary>
@@ -101,6 +95,20 @@ namespace Api.Controllers
             await _genresRepository.SaveChangesAsync();
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
+        }
+
+
+
+        [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
+        public async Task<ActionResult<List<SimpleEpisodeDTO>>> GetEpisodesOfSeason(int id, int seasonNumber)
+        {
+            Serie serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            var episodes = season.SeasonEpisodes;
+            List<SimpleEpisodeDTO> result = new List<SimpleEpisodeDTO>();
+            episodes.ForEach(x => result.Add(_mapper.Map<SimpleEpisodeDTO>(x)));
+
+            return Ok(result);
         }
     }
 }

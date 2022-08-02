@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Api.Data.Repository;
 
-public class SeriesRepository : IBaseRepository<Serie>, ISeriesRepository
+public class SeriesRepository : ISeriesRepository
 {
     private ApiContext _context;
     public SeriesRepository(ApiContext injectedContext)
@@ -39,6 +39,14 @@ public class SeriesRepository : IBaseRepository<Serie>, ISeriesRepository
     {
         return await _context.Series.FindAsync(id);
     }
+
+    public async Task<Serie?> RetrieveWithSeasonsAndEpisodesAsync(int id)
+    => await _context.Series
+        .Include(x => x.SerieSeasons)
+        .ThenInclude(x => x.SeasonEpisodes)
+        .Where(x => x.SerieId == id)
+        .FirstOrDefaultAsync();
+
 
     public async Task<Serie?> UpdateAsync(int id, Serie entity)
     {
