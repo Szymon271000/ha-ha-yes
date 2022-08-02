@@ -40,7 +40,7 @@ public class SeasonsRepository : IBaseRepository<Season>, ISeasonsRepository
         return await _context.Seasons.FindAsync(id);
     }
 
-    public async Task<Season?> UpdateAsync(int id, Season entity)
+    public async Task<Season?> UpdateAsync(Season entity)
     {
         _context.Seasons.Update(entity);
         int affectedRows = await SaveChangesAsync();

@@ -9,10 +9,10 @@ namespace Api.Controllers
     [ApiController]
     public class SeriesController : ControllerBase
     {
-        private readonly IBaseRepository<Serie> _seriesRepository;
+        private readonly ISeriesRepository _seriesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(IBaseRepository<Serie> seriesRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _mapper = mapper;
@@ -58,6 +58,8 @@ namespace Api.Controllers
         /// </remarks>
         /// <response code="201">Returns serie with specific ID</response>
         /// <response code="400">If the item is null</response>
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSerialById(int id)
         {
@@ -67,6 +69,28 @@ namespace Api.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
+        }
+
+        //Patch api/series/{id}
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<SerieUpdateDto> patchDoc)
+        {
+            var modelFromRepo = await _seriesRepository.RetrieveAsync(id);
+            if (modelFromRepo == null)
+            {
+                return NotFound();
+            }
+            var entityToPatch = _mapper.Map<SerieUpdateDto>(modelFromRepo);
+            patchDoc.ApplyTo(entityToPatch, ModelState);
+            if (!TryValidateModel(entityToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(entityToPatch, modelFromRepo);
+            await _seriesRepository.UpdateAsync(modelFromRepo);
+            //await _repository.SaveChanges();
+            return NoContent();
         }
     }
 }

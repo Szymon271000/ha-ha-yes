@@ -20,6 +20,6 @@ global using Api.DTOs.GenresDTOs;
 global using Api.DTOs.SeasonsDTOs;
 global using AutoMapper;
 global using System.ComponentModel.DataAnnotations;
-
-global using AutoMapper;
+global using Api.Data.Repository.Interfaces;
+global using Microsoft.AspNetCore.JsonPatch;
 global using Api.Data.Repository;

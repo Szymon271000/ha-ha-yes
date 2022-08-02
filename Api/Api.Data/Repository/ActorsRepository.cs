@@ -48,7 +48,7 @@ namespace Api.Data.Repository
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<Actor?> UpdateAsync(int id, Actor entity)
+        public async Task<Actor?> UpdateAsync(Actor entity)
         {
             _context.Actors.Update(entity);
             int affectedRows = await SaveChangesAsync();
