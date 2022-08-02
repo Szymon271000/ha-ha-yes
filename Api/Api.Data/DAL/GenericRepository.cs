@@ -1,6 +1,6 @@
 ﻿namespace Api.Data.DAL
 {
-    internal class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private ApiContext Context;
         private readonly DbSet<T> entities;
