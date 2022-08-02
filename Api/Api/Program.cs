@@ -1,5 +1,4 @@
 
-
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
