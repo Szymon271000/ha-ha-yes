@@ -1,3 +1,6 @@
+using Api.Data.Model;
+using Api.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -14,7 +17,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(s =>
 });
 
 builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("ApiConnection")));
-
+builder.Services.AddScoped<IBaseRepository<Serie>, SeriesRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
