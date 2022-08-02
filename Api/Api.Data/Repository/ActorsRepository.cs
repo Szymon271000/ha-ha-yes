@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Api.Data.Repository
 {
-    public class EpisodesRepository : IBaseRepository<Episode>, IEpisodesRepository
+    public class ActorsRepository : IBaseRepository<Actor>, IActorsRepository
     {
         private ApiContext _context;
-        public EpisodesRepository(ApiContext injectedContext)
+        public ActorsRepository(ApiContext injectedContext)
         {
             _context = injectedContext;
         }
-        public async Task<Episode?> CreateAsync(Episode entity)
+        public async Task<Actor?> CreateAsync(Actor entity)
         {
-            EntityEntry<Episode> addedEpisode = await _context.Episodes.AddAsync(entity);
+            EntityEntry<Actor> addedActor = await _context.Actors.AddAsync(entity);
             int affectedRows = await SaveChangesAsync();
             if (affectedRows == 1) return entity;
             return null;
@@ -25,22 +25,22 @@ namespace Api.Data.Repository
 
         public async Task<bool?> DeleteAsync(int id)
         {
-            Season? soughtEpisode = await _context.Seasons.FindAsync(id);
-            if (soughtEpisode == null) return null;
-            _context.Seasons.Remove(soughtEpisode);
+            Actor? soughtActor = await _context.Actors.FindAsync(id);
+            if (soughtActor == null) return null;
+            _context.Actors.Remove(soughtActor);
             int affectedRows = await SaveChangesAsync();
             if (affectedRows == 1) return true;
             return null;
         }
 
-        public async Task<IEnumerable<Episode>> RetrieveAllAsync()
+        public async Task<IEnumerable<Actor>> RetrieveAllAsync()
         {
-            return await _context.Episodes.ToListAsync();
+            return await _context.Actors.ToListAsync();
         }
 
-        public async Task<Episode?> RetrieveAsync(int id)
+        public async Task<Actor?> RetrieveAsync(int id)
         {
-            return await _context.Episodes.FindAsync(id);
+            return await _context.Actors.FindAsync(id);
         }
 
         public async Task<int> SaveChangesAsync()
@@ -48,9 +48,9 @@ namespace Api.Data.Repository
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<Episode?> UpdateAsync(int id, Episode entity)
+        public async Task<Actor?> UpdateAsync(int id, Actor entity)
         {
-            _context.Episodes.Update(entity);
+            _context.Actors.Update(entity);
             int affectedRows = await SaveChangesAsync();
             if (affectedRows == 1) return entity;
             return null;

@@ -1,9 +1,10 @@
 ﻿using Api.Data.Model;
+using Api.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Api.Data.Repository;
 
-public class SeriesRepository : IBaseRepository<Serie>
+public class SeriesRepository : IBaseRepository<Serie>, ISeriesRepository
 {
     private ApiContext _context;
     public SeriesRepository(ApiContext injectedContext)

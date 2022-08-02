@@ -1,5 +1,5 @@
 using Api.Data.Model;
-using Api.Data.Repository;
+using Api.Data.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
