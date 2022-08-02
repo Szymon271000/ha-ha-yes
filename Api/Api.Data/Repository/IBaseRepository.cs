@@ -1,4 +1,4 @@
-﻿namespace Api.Repository;
+﻿namespace Api.Data.Repository;
 
 public interface IBaseRepository<T> where T : class
 {
