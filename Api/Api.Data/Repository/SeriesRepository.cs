@@ -40,7 +40,7 @@ public class SeriesRepository : IBaseRepository<Serie>, ISeriesRepository
         return await _context.Series.FindAsync(id);
     }
 
-    public async Task<Serie?> UpdateAsync(int id, Serie entity)
+    public async Task<Serie?> UpdateAsync(Serie entity)
     {
         _context.Series.Update(entity);
         int affectedRows = await SaveChangesAsync();

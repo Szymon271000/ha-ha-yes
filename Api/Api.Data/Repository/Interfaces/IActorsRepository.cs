@@ -7,6 +7,6 @@
         Task<IEnumerable<Actor>> RetrieveAllAsync();
         Task<Actor?> RetrieveAsync(int id);
         Task<int> SaveChangesAsync();
-        Task<Actor?> UpdateAsync(int id, Actor entity);
+        Task<Actor?> UpdateAsync(Actor entity);
     }
 }

@@ -7,6 +7,6 @@
         Task<IEnumerable<Serie>> RetrieveAllAsync();
         Task<Serie?> RetrieveAsync(int id);
         Task<int> SaveChangesAsync();
-        Task<Serie?> UpdateAsync(int id, Serie entity);
+        Task<Serie?> UpdateAsync(Serie entity);
     }
 }
