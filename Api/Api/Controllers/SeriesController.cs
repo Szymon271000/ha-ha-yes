@@ -1,6 +1,8 @@
 ﻿
 
 
+using Api.Data.Repository.Interfaces;
+
 namespace Api.Controllers
 {
     [Route("api/[controller]")]

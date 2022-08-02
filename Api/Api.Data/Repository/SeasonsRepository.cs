@@ -1,9 +1,10 @@
 ﻿using Api.Data.Model;
+using Api.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Api.Data.Repository;
 
-public class SeasonsRepository : IBaseRepository<Season>
+public class SeasonsRepository : IBaseRepository<Season>, ISeasonsRepository
 {
     private ApiContext _context;
     public SeasonsRepository(ApiContext injectedContext)

@@ -1,6 +1,5 @@
 using Api.Data.Model;
-using Api.Data.Model.Authentication;
-using Api.Data.Repository;
+using Api.Data.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -21,9 +20,6 @@ builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Config
 builder.Services.AddScoped<IBaseRepository<Serie>, SeriesRepository>();
 builder.Services.AddScoped<IBaseRepository<Season>, SeasonsRepository>();
 builder.Services.AddScoped<IBaseRepository<Episode>, EpisodesRepository>();
-builder.Services.AddScoped<IBaseRepository<Actor>, ActorsRepository>();
-builder.Services.AddScoped<IBaseRepository<Genre>, GenresRepository>();
-builder.Services.AddScoped<IBaseRepository<User>, UsersRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
