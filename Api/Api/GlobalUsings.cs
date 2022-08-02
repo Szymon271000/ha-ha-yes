@@ -12,3 +12,6 @@ global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using System.Text;
 global using Microsoft.AspNetCore.Mvc;
+global using Api.Data.Model;
+global using Api.DTOs.SeriesDTOs;
+global using AutoMapper;
