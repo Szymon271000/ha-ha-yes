@@ -8,3 +8,6 @@ global using System.Diagnostics;
 global using Api.Middlewares;
 global using Microsoft.OpenApi.Models;
 global using System.Reflection;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using System.Text;
