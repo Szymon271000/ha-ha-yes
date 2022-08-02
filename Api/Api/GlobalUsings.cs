@@ -15,3 +15,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using Api.Data.Model;
 global using Api.DTOs.SeriesDTOs;
 global using AutoMapper;
+global using Api.Data.Repository;
