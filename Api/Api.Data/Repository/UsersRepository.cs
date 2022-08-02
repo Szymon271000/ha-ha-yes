@@ -43,7 +43,7 @@ public class UsersRepository : IBaseRepository<User>, IUsersRepository
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<User?> UpdateAsync(int id, User entity)
+    public async Task<User?> UpdateAsync(User entity)
     {
         _context.Users.Update(entity);
         int affectedRows = await SaveChangesAsync();

@@ -27,7 +27,7 @@
         ///     }
         ///
         /// </remarks>
-        /// <response code="201">Returns all series</response>
+        /// <response code="200">Returns all series</response>
         /// <response code="400">If the item is null</response>
         [HttpGet]
         public async Task<IActionResult> GetAllSeries()
