@@ -17,11 +17,11 @@ namespace Api.Controllers
             _userRepository = userRepository;
         }
         [HttpPost]
-        public async Task<IActionResult> Post(string login, string password)
+        public async Task<IActionResult> Post(int id, string login, string password)
         {
             if (login != null && password != null)
             {
-                var user = await GetUser(login, password);
+                var user = await GetUser(id);
                 if (user != null)
                 {
                     //create claims details based on the user information
@@ -30,9 +30,9 @@ namespace Api.Controllers
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("UserId", user.UserId.ToString()),
-                        new Claim("DisplayName", user.DisplayName),
-                        new Claim("UserName", user.UserName),
-                        new Claim("Email", user.Email)
+                        new Claim("CredentialsID", user.CredentialsID.ToString()),
+                        new Claim("Login", user.Credentials.Login),
+                        new Claim("Password", user.Credentials.Password)
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -57,10 +57,9 @@ namespace Api.Controllers
             }
         }
 
-        private async Task<User> GetUser(string login, string password)
+        private async Task<User> GetUser(int id)
         {
-            return await _userRepository.GetSingleByConditionAsync(u => u.Credentials.Login == login && u.Credentials.Password == password);
+            return await _userRepository.RetrieveAsync(id);
         }
     }
-}
 }

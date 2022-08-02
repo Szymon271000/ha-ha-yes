@@ -39,7 +39,7 @@ public class UsersRepository : IBaseRepository<User>
 
     public async Task<User?> RetrieveAsync(int id)
     {
-        return await _context.Users.FindAsync(id);
+        return await _context.Users.Include(u => u.Credentials).FirstOrDefaultAsync(u=>u.UserId==id);
     }
 
     public async Task<int> SaveChangesAsync()
