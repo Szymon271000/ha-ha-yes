@@ -17,7 +17,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(s =>
 });
 
 builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("ApiConnection")));
-builder.Services.AddScoped<IBaseRepository<Ser>, SeriesRepository>();
+builder.Services.AddScoped<IBaseRepository<Serie>, SeriesRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
