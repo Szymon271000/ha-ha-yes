@@ -125,17 +125,31 @@
         }
 
 
-
+        /// <summary>
+        /// Get list of episodes by ID of target serie and number of target season
+        /// </summary>
+        /// <returns>Episodes of target season in DB</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///        "episodeNumber": "",
+        ///        "episodeName": "",
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns Episodes of target season</response>
+        /// <response code="400">If the item is null</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
         public async Task<ActionResult<List<SimpleEpisodeDTO>>> GetEpisodesOfSeason(int id, int seasonNumber)
         {
             Serie serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
             var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
-            var episodes = season.SeasonEpisodes;
-            List<SimpleEpisodeDTO> result = new List<SimpleEpisodeDTO>();
-            episodes.ForEach(x => result.Add(_mapper.Map<SimpleEpisodeDTO>(x)));
+            List<Episode> episodes = season.SeasonEpisodes;
+            var episodesSorted = episodes.OrderBy(x => x.EpisodeNumber).ToList();
 
-            return Ok(result);
+            return Ok(_mapper.Map<IEnumerable<SimpleEpisodeDTO>>(episodesSorted));
         }
     }
 }
