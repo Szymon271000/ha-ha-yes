@@ -8,6 +8,6 @@
         public string? EpisodeName { get; set; }
         public Season? EpisodeSeason { get; set; }
         public int? SeasonId { get; set; }
-        public List<Actor>? EpisodeActors { get; set; }
+        public List<Actor>? EpisodeActors { get; set; } = new List<Actor>();
     }
 }

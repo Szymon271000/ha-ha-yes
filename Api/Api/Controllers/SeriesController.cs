@@ -10,11 +10,13 @@ namespace Api.Controllers
     public class SeriesController : ControllerBase
     {
         private readonly IBaseRepository<Serie> _seriesRepository;
+        private readonly IBaseRepository<Genre> _genresRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(IBaseRepository<Serie> seriesRepository, IMapper mapper)
+        public SeriesController(IBaseRepository<Serie> seriesRepository, IBaseRepository<Genre> genresRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
+            _genresRepository = genresRepository;
             _mapper = mapper;
         }
 
@@ -67,6 +69,38 @@ namespace Api.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
+        }
+
+
+        /// <summary>
+        /// Add genre to serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="genreId"></param>
+        /// <returns>Updated list of genres in specific serie </returns>
+        /// <response code="204">The genre has been added to serie</response>
+        /// <response code="400">If the serie is null</response>
+        /// <response code="400">If the genre is null</response>
+        [HttpPut("id/genres/{genreId}")]
+        public async Task<IActionResult> AddGenreToSerial(int id, int genreId)
+        {
+            var serial = await _seriesRepository.RetrieveAsync(id);
+            if (serial == null)
+            {
+                return NotFound();
+            }
+            var genre = await _genresRepository.RetrieveAsync(genreId);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            serial.SerieGenres.Add(genre);
+            genre.GenreSerie.Add(serial);
+            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            await _genresRepository.UpdateAsync(genre.GenreId, genre);
+            await _genresRepository.SaveChangesAsync();
+            await _seriesRepository.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
