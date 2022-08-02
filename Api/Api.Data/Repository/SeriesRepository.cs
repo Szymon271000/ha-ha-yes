@@ -31,7 +31,7 @@ public class SeriesRepository : IBaseRepository<Serie>
 
     public async Task<IEnumerable<Serie>> RetrieveAllAsync()
     {
-        return await _context.Series.Include(x=> x.SerieGenres).Include(x=> x.SerieSeasons).ToListAsync();
+        return await _context.Series.ToListAsync();
     }
 
     public async Task<Serie?> RetrieveAsync(int id)
