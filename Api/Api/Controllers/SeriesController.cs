@@ -69,6 +69,16 @@ namespace Api.Controllers
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
         }
 
+
+        /// <summary>
+        /// Add genre to serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="genreId"></param>
+        /// <returns>Updated list of genres in specific serie </returns>
+        /// <response code="204">The genre has been added to serie</response>
+        /// <response code="400">If the serie is null</response>
+        /// <response code="400">If the genre is null</response>
         [HttpPut("id/genres/{genreId}")]
         public async Task<IActionResult> AddGenreToSerial(int id, int genreId)
         {
