@@ -1,5 +1,5 @@
 using Api.Data.Model;
-using Api.Repository;
+using Api.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -18,6 +18,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(s =>
 
 builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("ApiConnection")));
 builder.Services.AddScoped<IBaseRepository<Serie>, SeriesRepository>();
+builder.Services.AddScoped<IBaseRepository<Season>, SeasonsRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
