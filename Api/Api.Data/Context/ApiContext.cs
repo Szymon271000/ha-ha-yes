@@ -12,7 +12,7 @@
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Season> Seasons { get; set; }
-        public DbSet<Serie> Serials { get; set; }
+        public DbSet<Serie> Series { get; set; }
         public DbSet<Credentials> UserCredentials { get; set; }
         public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
