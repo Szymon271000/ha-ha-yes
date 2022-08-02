@@ -38,5 +38,33 @@ namespace Api.Controllers
             var series = await _seriesRepository.RetrieveAllAsync();
             return Ok(_mapper.Map<IEnumerable<SimpleSerieDTO>>(series));
         }
+
+
+        /// <summary>
+        /// Get serie by ID with Name and Ids
+        /// </summary>
+        /// <returns>Serie in DB</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///        "SerieId": "",
+        ///        "SerieName": "",
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Returns serie with specific ID</response>
+        /// <response code="400">If the item is null</response>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSerialById(int id)
+        {
+            var serial = await _seriesRepository.RetrieveAsync(id);
+            if (serial == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<SimpleSerieDTO>(serial));
+        }
     }
 }
