@@ -1,4 +1,5 @@
 using Api.Data.Model;
+using Api.Data.Model.Authentication;
 using Api.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IBaseRepository<Season>, SeasonsRepository>();
 builder.Services.AddScoped<IBaseRepository<Episode>, EpisodesRepository>();
 builder.Services.AddScoped<IBaseRepository<Actor>, ActorsRepository>();
 builder.Services.AddScoped<IBaseRepository<Genre>, GenresRepository>();
+builder.Services.AddScoped<IBaseRepository<User>, UsersRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
