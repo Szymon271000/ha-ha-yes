@@ -1,12 +1,11 @@
-﻿
-
-namespace Api.Profiles
+﻿namespace Api.Profiles
 {
     public class SeriesProfile: Profile
     {
         public SeriesProfile()
         {
             CreateMap<Serie, SimpleSerieDTO>();
+            CreateMap<SerieUpdateDto, Actor>();
         }
     }
 }

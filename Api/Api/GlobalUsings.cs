@@ -14,4 +14,10 @@ global using System.Text;
 global using Microsoft.AspNetCore.Mvc;
 global using Api.Data.Model;
 global using Api.DTOs.SeriesDTOs;
+global using Api.DTOs.ActorsDTOs;
+global using Api.DTOs.EpisodesDTOs;
+global using Api.DTOs.GenresDTOs;
+global using Api.DTOs.SeasonsDTOs;
 global using AutoMapper;
+global using System.ComponentModel.DataAnnotations;
+
