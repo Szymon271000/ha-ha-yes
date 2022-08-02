@@ -1,7 +1,8 @@
-﻿
-
-namespace Api.Middlewares
+﻿namespace Api.Middlewares
 {
+    /// <summary>
+    /// Serilog Middleware
+    /// </summary>
     public class SerilogMiddleware
     {
         const string MessageTemplate =
@@ -11,11 +12,20 @@ namespace Api.Middlewares
 
         readonly RequestDelegate _next;
 
+        /// <summary>
+        /// SerilogMidddleware
+        /// </summary>
+        /// <param name="next"></param>
         public SerilogMiddleware(RequestDelegate next)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
+        /// <summary>
+        /// Serilog Middleware
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext httpContext)
         {
             if (httpContext == null) throw new ArgumentNullException(nameof(httpContext));
