@@ -20,8 +20,8 @@ builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Config
 builder.Services.AddScoped<IBaseRepository<Serie>, SeriesRepository>();
 builder.Services.AddScoped<IBaseRepository<Season>, SeasonsRepository>();
 builder.Services.AddScoped<IBaseRepository<Episode>, EpisodesRepository>();
-
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
+builder.Services.AddScoped<IBaseRepository<Genre>, GenresRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
