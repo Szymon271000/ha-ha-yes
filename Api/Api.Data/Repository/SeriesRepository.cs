@@ -60,5 +60,10 @@ public class SeriesRepository : ISeriesRepository
     {
         return await _context.SaveChangesAsync();
     }
+
+    public async Task<Serie?> RetrieveSerieWithGenresAsync(int id)
+    {
+        return await _context.Series.Include(x => x.SerieGenres).Where(x => x.SerieId == id).FirstOrDefaultAsync();
+    }
 }
 

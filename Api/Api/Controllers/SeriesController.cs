@@ -29,7 +29,7 @@
         ///     }
         ///
         /// </remarks>
-        /// <response code="201">Returns all series</response>
+        /// <response code="200">Returns all series</response>
         /// <response code="400">If the item is null</response>
         [HttpGet]
         public async Task<IActionResult> GetAllSeries()
@@ -53,7 +53,7 @@
         ///     }
         ///
         /// </remarks>
-        /// <response code="201">Returns serie with specific ID</response>
+        /// <response code="200">Returns serie with specific ID</response>
         /// <response code="400">If the item is null</response>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSerialById(int id)
@@ -91,8 +91,35 @@
             serial.SerieGenres.Add(genre);
             genre.GenreSerie.Add(serial);
             await _seriesRepository.UpdateAsync(serial.SerieId, serial);
-            await _genresRepository.UpdateAsync(genre.GenreId, genre);
-            await _genresRepository.SaveChangesAsync();
+            await _seriesRepository.SaveChangesAsync();
+            return NoContent();
+        }
+
+
+        /// <summary>
+        /// Delete genre from serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="genreId"></param>
+        /// <returns>Updated list of genres in specific serie </returns>
+        /// <response code="204">The genre has been deleted to serie</response>
+        /// <response code="400">If the serie is null</response>
+        /// <response code="400">If the genre is null</response>
+        [HttpDelete("id/genres/{genreId}")]
+        public async Task<IActionResult> DeleteGenreToSerial(int id, int genreId)
+        {
+            var serial = await _seriesRepository.RetrieveSerieWithGenresAsync(id);
+            if (serial == null)
+            {
+                return NotFound();
+            }
+            var genre = await _genresRepository.RetrieveAsync(genreId);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            serial.SerieGenres.Remove(genre);
+            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
         }
