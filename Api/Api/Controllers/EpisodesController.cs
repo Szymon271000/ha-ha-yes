@@ -12,6 +12,42 @@
             _mapper = mapper;
         }
 
+        [HttpPost]
+        [Route("add")]
+        public async Task<IActionResult> Create(EpisodeCreateDTO newEpisode)
+        {
+            var createdGenre = await _repository.CreateAsync(_mapper.Map<Episode>(newEpisode));
+            if (createdGenre == null) return BadRequest();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("remove")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var result = await _repository.DeleteAsync(id);
+            if (result == null) return NotFound();
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var soughtEpisode = await _repository.RetrieveAsync(id);
+            if (soughtEpisode == null) return NotFound();
+            return Ok(_mapper.Map<EpisodeGetDTO>(soughtEpisode));
+        }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<IActionResult> GetAll()
+        {
+            var fetchedEpisodes = await _repository.RetrieveAllAsync();
+            return Ok(_mapper.Map<IList<EpisodeGetDTO>>(fetchedEpisodes));
+        }
+
+
         //Patch api/episodes/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<EpisodeUpdateDto> patchDoc)
