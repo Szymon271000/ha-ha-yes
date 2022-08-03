@@ -306,5 +306,32 @@
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Get target episode of target season of the serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <returns>Target episode </returns>
+        /// <response code="200">When target episode was returned</response>
+        /// <response code="404">If any object doesn't exist</response>
+        [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}")]
+        public async Task<ActionResult<SimpleEpisodeDTO>> GetEpisodeFromSerie(int id, int seasonNumber, int episodeNumber) 
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            return _mapper.Map<SimpleEpisodeDTO>(episode);
+        }
     }
 }
