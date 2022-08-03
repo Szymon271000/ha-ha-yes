@@ -6,6 +6,8 @@ namespace Api.Profiles
         public ActorsProfile()
         {
             CreateMap<ActorUpdateDto, Actor>();
+            CreateMap<Actor, ActorGetDTO>();
+            CreateMap<ActorGetDTO, Actor>();
         }
     }
 }
