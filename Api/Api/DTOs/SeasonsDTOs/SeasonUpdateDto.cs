@@ -3,6 +3,6 @@
     public class SeasonUpdateDto
     {
         [Required]
-        public int? SeasonNumber { get; set; }
+        public int SeasonNumber { get; set; }
     }
 }

@@ -3,8 +3,9 @@
     public class EpisodeUpdateDto
     {
         [Required]
-        public int? EpisodeNumber { get; set; }
+        public int EpisodeNumber { get; set; }
         [Required]
-        public string? EpisodeName { get; set; }
+        [MaxLengthAttribute(50)]
+        public string EpisodeName { get; set; }
     }
 }

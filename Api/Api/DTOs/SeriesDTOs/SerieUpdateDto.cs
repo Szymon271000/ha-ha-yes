@@ -3,7 +3,8 @@
     public class SerieUpdateDto
     {
         [Required]
-        public string? SerieName { get; set; }
+        [MaxLengthAttribute(50)]
+        public string SerieName { get; set; }
 
     }
 }
