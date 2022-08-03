@@ -3,6 +3,7 @@
     public class GenreUpdateDto
     {
         [Required]
-        public string? GenreName { get; set; }
+        [MaxLengthAttribute(50)]
+        public string GenreName { get; set; }
     }
 }

@@ -3,7 +3,8 @@
     public class ActorUpdateDto
     {
         [Required]
-        public string? ActorName { get; set; }
+        [MaxLengthAttribute(50)]
+        public string ActorName { get; set; }
 
     }
 }
