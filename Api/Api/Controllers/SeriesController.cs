@@ -46,6 +46,7 @@
         /// <summary>
         /// Get serie by ID with Name and Ids
         /// </summary>
+        /// <param name="id"></param>
         /// <returns>Serie in DB</returns>
         /// <remarks>
         /// Sample request:
@@ -60,14 +61,14 @@
         /// <response code="200">Returns serie with specific ID</response>
         /// <response code="400">If the item is null</response>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSerialById(int id)
+        public async Task<IActionResult> GetSerieById(int id)
         {
-            var serial = await _seriesRepository.RetrieveAsync(id);
-            if (serial == null)
+            var serie = await _seriesRepository.RetrieveAsync(id);
+            if (serie == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<SimpleSerieDTO>(serial));
+            return Ok(_mapper.Map<SimpleSerieDTO>(serie));
         }
 
         /// <summary>
@@ -80,10 +81,10 @@
         /// <response code="400">If the serie is null</response>
         /// <response code="400">If the genre is null</response>
         [HttpPut("{id}/genres/{genreId}")]
-        public async Task<IActionResult> AddGenreToSerial(int id, int genreId)
+        public async Task<IActionResult> AddGenreToSerie(int id, int genreId)
         {
-            var serial = await _seriesRepository.RetrieveAsync(id);
-            if (serial == null)
+            var serie = await _seriesRepository.RetrieveAsync(id);
+            if (serie == null)
             {
                 return NotFound();
             }
@@ -92,8 +93,8 @@
             {
                 return NotFound();
             }
-            serial.SerieGenres.Add(genre);
-            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            serie.SerieGenres.Add(genre);
+            await _seriesRepository.UpdateAsync(serie.SerieId, serie);
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
         }
@@ -109,10 +110,10 @@
         /// <response code="400">If the serie is null</response>
         /// <response code="400">If the genre is null</response>
         [HttpDelete("{id}/genres/{genreId}")]
-        public async Task<IActionResult> DeleteGenreFromSerial(int id, int genreId)
+        public async Task<IActionResult> DeleteGenreFromSerie(int id, int genreId)
         {
-            var serial = await _seriesRepository.RetrieveSerieWithGenresAsync(id);
-            if (serial == null)
+            var serie = await _seriesRepository.RetrieveSerieWithGenresAsync(id);
+            if (serie == null)
             {
                 return NotFound();
             }
@@ -121,8 +122,8 @@
             {
                 return NotFound();
             }
-            serial.SerieGenres.Remove(genre);
-            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            serie.SerieGenres.Remove(genre);
+            await _seriesRepository.UpdateAsync(serie.SerieId, serie);
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
         }
@@ -150,14 +151,14 @@
         /// <response code="200">Returns seasons of specific serie</response>
         /// <response code="400">If the item is null</response>
         [HttpGet("{id}/seasons")]
-        public async Task<IActionResult> GetSerialWithSeasonsById(int id)
+        public async Task<IActionResult> GetSerieWithSeasonsById(int id)
         {
-            var serial = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
-            if (serial == null)
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            if (serie == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<SerieWithSeasonsDTO>(serial));
+            return Ok(_mapper.Map<SerieWithSeasonsDTO>(serie));
         }
 
 
@@ -171,10 +172,10 @@
         /// <response code="400">If the serie is null</response>
         /// <response code="400">If the season is null</response>
         [HttpPut("{id}/seasons/{seasonsId}")]
-        public async Task<IActionResult> AddSeasonToSerial(int id, int seasonsId)
+        public async Task<IActionResult> AddSeasonToSerie(int id, int seasonsId)
         {
-            var serial = await _seriesRepository.RetrieveAsync(id);
-            if (serial == null)
+            var serie = await _seriesRepository.RetrieveAsync(id);
+            if (serie == null)
             {
                 return NotFound();
             }
@@ -183,8 +184,8 @@
             {
                 return NotFound();
             }
-            serial.SerieSeasons.Add(season);
-            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            serie.SerieSeasons.Add(season);
+            await _seriesRepository.UpdateAsync(serie.SerieId, serie);
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
         }
@@ -199,24 +200,60 @@
         /// <response code="400">If the serie is null</response>
         /// <response code="400">If the season is null</response>
         [HttpDelete("{id}/seasons/{seasonNumber}")]
-        public async Task<IActionResult> DeleteSeasonFromSerial(int id, int seasonNumber)
+        public async Task<IActionResult> DeleteSeasonFromSerie(int id, int seasonNumber)
         {
-            var serial = await _seriesRepository.RetrieveSerieWithSeasonsAsync(id);
-            if (serial == null)
+            var serie = await _seriesRepository.RetrieveSerieWithSeasonsAsync(id);
+            if (serie == null)
             {
                 return NotFound();
             }
 
-            var season = serial.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
             if (season == null)
             {
                 return NotFound();
             }
 
-            serial.SerieSeasons.Remove(season);
-            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            serie.SerieSeasons.Remove(season);
+            await _seriesRepository.UpdateAsync(serie.SerieId, serie);
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
+        }
+
+
+
+        /// <summary>
+        /// Get season of specific seasonNumber of a serie by identified by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <returns>Serie in DB</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///        "seasonNumber": "",
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns season with specific seasonNumber</response>
+        /// <response code="400">If the serie is null</response>
+        /// <response code="400">If the season is null</response>
+        [HttpGet("{id}/season/{seasonNumber}")]
+        public async Task<IActionResult> GetSeasonOfSpecificSerieById(int id, int seasonNumber)
+        {
+            var serie = await _seriesRepository.RetrieveSerieWithSeasonsAsync(id);
+            if (serie == null)
+            {
+                return NotFound();
+            }
+            var season = serie.SerieSeasons.Where(x=> x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<SimpleSeasonDTO>(season));
         }
 
 
@@ -306,6 +343,11 @@
 
             return NoContent();
         }
+
+
+
+
+
 
         /// <summary>
         /// Get target episode of target season of the serie
