@@ -66,6 +66,24 @@
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
         }
 
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Create(SerieCreateDto newSerie)
+        {
+            var createdSerie = await _seriesRepository.CreateAsync(_mapper.Map<Serie>(newSerie));
+            if (createdSerie == null) return BadRequest();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var result = await _seriesRepository.DeleteAsync(id);
+            if (result == null) return NotFound();
+            return NoContent();
+        }
+
         /// <summary>
         /// Update series name
         /// </summary>
