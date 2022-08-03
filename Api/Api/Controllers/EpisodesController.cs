@@ -13,7 +13,7 @@
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         public async Task<IActionResult> Create(EpisodeCreateDTO newEpisode)
         {
             var createdGenre = await _repository.CreateAsync(_mapper.Map<Episode>(newEpisode));
@@ -22,7 +22,7 @@
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             var result = await _repository.DeleteAsync(id);
@@ -31,7 +31,7 @@
         }
 
         [HttpGet]
-        [Route("get/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var soughtEpisode = await _repository.RetrieveAsync(id);
@@ -40,7 +40,7 @@
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("")]
         public async Task<IActionResult> GetAll()
         {
             var fetchedEpisodes = await _repository.RetrieveAllAsync();

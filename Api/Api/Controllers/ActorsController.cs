@@ -15,7 +15,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         public async Task<IActionResult> Create(string name)
         {
             var createdGenre = await _repository.CreateAsync(new Actor() { ActorName = name });
@@ -24,7 +24,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             var result = await _repository.DeleteAsync(id);
@@ -33,7 +33,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("get/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var soughtActor = await _repository.RetrieveAsync(id);
@@ -42,7 +42,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("")]
         public async Task<IActionResult> GetAll()
         {
             var fetchedActors = await _repository.RetrieveAllAsync();
