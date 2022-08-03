@@ -1,0 +1,20 @@
+﻿1|Robert De Niro
+2|Jack Nicholson
+3|Marlon Brando
+4|Denzel Washington
+5|Katharine Hepburn
+6|Humphrey Bogart
+7|Meryl Streep
+8|Daniel Day-Lewis
+9|Sidney Poitier
+10|Clark Gable
+11|Ingrid Bergman
+12|Tom Hanks
+13|Elizabeth Taylor
+14|Bette Davis
+15|Gregory Peck
+16|Leonardo DiCaprio
+17|Cate Blanchett
+18|Audrey Hepburn
+19|Spencer Tracy
+20|Kate Winslet
