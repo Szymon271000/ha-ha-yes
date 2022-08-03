@@ -12,6 +12,42 @@
             _mapper = mapper;
         }
 
+        [HttpPost]
+        [Route("add", Name = "xyz")]
+        public async Task<IActionResult> Create(string name)
+        {
+            var createdGenre = await _repository.CreateAsync(new Genre() { GenreName = name });
+            if (createdGenre == null) return BadRequest();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("remove")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var result = await _repository.DeleteAsync(id);
+            if (result == null) return NotFound();
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var soughtGenre = await _repository.RetrieveAsync(id);
+            if (soughtGenre == null) return NotFound();
+            return Ok(_mapper.Map<GenreGetDTO>(soughtGenre));
+        }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<IActionResult> GetAll()
+        {
+            var fetchedGenres = await _repository.RetrieveAllAsync();
+            return Ok(_mapper.Map<IList<GenreGetDTO>>(fetchedGenres));
+        }
+
+
 
         /// <summary>
         /// Update genre name

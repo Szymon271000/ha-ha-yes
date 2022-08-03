@@ -14,6 +14,42 @@ namespace Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost]
+        [Route("add")]
+        public async Task<IActionResult> Create(string name)
+        {
+            var createdGenre = await _repository.CreateAsync(new Actor() { ActorName = name });
+            if (createdGenre == null) return BadRequest();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("remove")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var result = await _repository.DeleteAsync(id);
+            if (result == null) return NotFound();
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var soughtActor = await _repository.RetrieveAsync(id);
+            if (soughtActor == null) return NotFound();
+            return Ok(_mapper.Map<ActorGetDTO>(soughtActor));
+        }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<IActionResult> GetAll()
+        {
+            var fetchedActors = await _repository.RetrieveAllAsync();
+            return Ok(_mapper.Map<IList<ActorGetDTO>>(fetchedActors));
+        }
+
+
         /// <summary>
         /// Update actor name
         /// </summary>

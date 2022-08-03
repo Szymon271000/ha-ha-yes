@@ -1,6 +1,3 @@
-using Api.Data.Model;
-using Api.Data.Repository.Interfaces;
-
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -23,6 +20,8 @@ builder.Services.AddScoped<IEpisodesRepository, EpisodesRepository>();
 builder.Services.AddScoped<IActorsRepository, ActorsRepository>();
 builder.Services.AddScoped<IGenresRepository, GenresRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IGenresRepository, GenresRepository>();
+builder.Services.AddScoped<IActorsRepository, ActorsRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -100,7 +99,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseMiddleware<SerilogMiddleware>();
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
