@@ -4,7 +4,7 @@
     {
         public EpisodesProfile()
         {
-            CreateMap<EpisodeUpdateDto, Actor>();
+            CreateMap<EpisodeUpdateDto, Episode>().ReverseMap();
         }
     }
 }

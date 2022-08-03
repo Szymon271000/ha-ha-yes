@@ -20,6 +20,8 @@ builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Config
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 builder.Services.AddScoped<ISeasonsRepository, SeasonsRepository>();
 builder.Services.AddScoped<IEpisodesRepository, EpisodesRepository>();
+builder.Services.AddScoped<IActorsRepository, ActorsRepository>();
+builder.Services.AddScoped<IGenresRepository, GenresRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 // Add services to the container.
 

@@ -4,7 +4,7 @@
     {
         public GenresProfile()
         {
-            CreateMap<GenreUpdateDto, Actor>();
+            CreateMap<GenreUpdateDto, Genre>().ReverseMap();
         }
     }
 }

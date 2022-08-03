@@ -13,6 +13,25 @@ namespace Api.Controllers
             _repository = repository;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Update actor name
+        /// </summary>
+        /// <returns>Update actor name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "ActorName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
+
         //Patch api/actors/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<ActorUpdateDto> patchDoc)

@@ -12,6 +12,7 @@
             _userRepository = userRepository;
         }
         [HttpPost]
+
         public async Task<IActionResult> Post(int id, string login, string password)
         {
             if (login != null && password != null)

@@ -5,7 +5,7 @@
         public SeriesProfile()
         {
             CreateMap<Serie, SimpleSerieDTO>();
-            CreateMap<SerieUpdateDto, Actor>();
+            CreateMap<SerieUpdateDto, Serie>().ReverseMap();
         }
     }
 }

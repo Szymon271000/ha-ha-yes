@@ -12,6 +12,33 @@
             _mapper = mapper;
         }
 
+
+        /// <summary>
+        /// Update episode name or number
+        /// </summary>
+        /// <returns>Update episode name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "EpisodeName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        ///     Or
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "EpisodeNumber",
+        ///        "value": "5"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
+
         //Patch api/episodes/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<EpisodeUpdateDto> patchDoc)

@@ -4,7 +4,7 @@
     {
         public SeasonsProfile()
         {
-            CreateMap<SeasonUpdateDto, Actor>();
+            CreateMap<SeasonUpdateDto, Season>().ReverseMap();
         }
     }
 }

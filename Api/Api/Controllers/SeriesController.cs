@@ -20,7 +20,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "SerieId": "",
         ///        "SerieName": "",
@@ -44,7 +44,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "SerieId": "",
         ///        "SerieName": "",
@@ -65,6 +65,24 @@
             }
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
         }
+
+        /// <summary>
+        /// Update series name
+        /// </summary>
+        /// <returns>Update series name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "SerieName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
 
         //Patch api/series/{id}
         [HttpPatch("{id}")]

@@ -5,7 +5,7 @@ namespace Api.Profiles
     {
         public ActorsProfile()
         {
-            CreateMap<ActorUpdateDto, Actor>();
+            CreateMap<ActorUpdateDto, Actor>().ReverseMap();
         }
     }
 }

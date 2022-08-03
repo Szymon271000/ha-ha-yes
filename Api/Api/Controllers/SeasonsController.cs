@@ -12,8 +12,26 @@
             _mapper = mapper;
         }
 
-            //Patch api/seasons/{id}
-            [HttpPatch("{id}")]
+        /// <summary>
+        /// Update season number
+        /// </summary>
+        /// <returns>Update season name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "SeasonNumber",
+        ///        "value": "5"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
+
+        //Patch api/seasons/{id}
+        [HttpPatch("{id}")]
             public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<SeasonUpdateDto> patchDoc)
             {
                 var modelFromRepo = await _repository.RetrieveAsync(id);

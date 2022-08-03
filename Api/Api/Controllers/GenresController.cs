@@ -11,6 +11,26 @@
             _repository = repository;
             _mapper = mapper;
         }
+
+
+        /// <summary>
+        /// Update genre name
+        /// </summary>
+        /// <returns>Update genre name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "GenreName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
+
         //Patch api/genres/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<GenreUpdateDto> patchDoc)
