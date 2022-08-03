@@ -160,7 +160,7 @@
         /// <param name="episodeId"></param>
         /// <returns>NoContent</returns>
         /// <response code="204">If episode was added</response>
-        /// <response code="404">If any of the objects were not found</response>
+        /// <response code="404">If any of the objects was not found</response>
 
 
         [HttpPost("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
@@ -179,6 +179,36 @@
                 return NotFound();
 
             season.SeasonEpisodes.Add(episode);
+            await _seriesRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete target episode from the season of the target serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeId"></param>
+        /// <returns>NoContent</returns>
+        /// <response code="204">If episode was deleted</response>
+        /// <response code="404">If any of the objects was not found</response>
+        [HttpDelete("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
+        public async Task<ActionResult> DeleteEpisodeFromSeason (int id, int seasonNumber, int episodeId)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = await _episodesRepository.RetrieveAsync(episodeId);
+            if (episode == null || !season.SeasonEpisodes.Any(x => x.EpisodeId == episodeId))
+                return NotFound();
+
+            season.SeasonEpisodes.Remove(episode);
             await _seriesRepository.SaveChangesAsync();
 
             return NoContent();
