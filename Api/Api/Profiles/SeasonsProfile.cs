@@ -9,6 +9,7 @@
             CreateMap<Season, SeasonCreateDTO>();
             CreateMap<Season, SeasonGetDTO>();
             CreateMap<SeasonGetDTO, Season>();
+            CreateMap<SeasonUpdateDto, Season>().ReverseMap();
         }
     }
 }

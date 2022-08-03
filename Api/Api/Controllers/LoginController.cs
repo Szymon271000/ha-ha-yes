@@ -30,12 +30,13 @@
         /// <response code="200">If Login is successful</response>
         /// <response code="401">If the item is null</response>
         [HttpPost]
+
         public async Task<IActionResult> Post(int id, string login, string password)
         {
             if (login != null && password != null)
             {
                 var user = await GetUser(id);
-                if (user != null)
+                if (user != null && user.Credentials.Login == login && user.Credentials.Password == password)
                 {
                     var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),

@@ -13,7 +13,7 @@
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         public async Task<IActionResult> Create(EpisodeCreateDTO newEpisode)
         {
             var createdGenre = await _repository.CreateAsync(_mapper.Map<Episode>(newEpisode));
@@ -22,7 +22,7 @@
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             var result = await _repository.DeleteAsync(id);
@@ -31,7 +31,7 @@
         }
 
         [HttpGet]
-        [Route("get/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var soughtEpisode = await _repository.RetrieveAsync(id);
@@ -40,13 +40,40 @@
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("")]
         public async Task<IActionResult> GetAll()
         {
             var fetchedEpisodes = await _repository.RetrieveAllAsync();
             return Ok(_mapper.Map<IList<EpisodeGetDTO>>(fetchedEpisodes));
         }
 
+
+
+        /// <summary>
+        /// Update episode name or number
+        /// </summary>
+        /// <returns>Update episode name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "EpisodeName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        ///     Or
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "EpisodeNumber",
+        ///        "value": "5"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
 
         //Patch api/episodes/{id}
         [HttpPatch("{id}")]

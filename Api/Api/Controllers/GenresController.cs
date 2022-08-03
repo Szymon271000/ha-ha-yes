@@ -13,7 +13,7 @@
         }
 
         [HttpPost]
-        [Route("add", Name = "xyz")]
+        [Route("", Name = "xyz")]
         public async Task<IActionResult> Create(string name)
         {
             var createdGenre = await _repository.CreateAsync(new Genre() { GenreName = name });
@@ -22,7 +22,7 @@
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             var result = await _repository.DeleteAsync(id);
@@ -31,7 +31,7 @@
         }
 
         [HttpGet]
-        [Route("get/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var soughtGenre = await _repository.RetrieveAsync(id);
@@ -40,12 +40,32 @@
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("")]
         public async Task<IActionResult> GetAll()
         {
             var fetchedGenres = await _repository.RetrieveAllAsync();
             return Ok(_mapper.Map<IList<GenreGetDTO>>(fetchedGenres));
         }
+
+
+
+        /// <summary>
+        /// Update genre name
+        /// </summary>
+        /// <returns>Update genre name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "GenreName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
 
         //Patch api/genres/{id}
         [HttpPatch("{id}")]
