@@ -35,7 +35,7 @@
             if (login != null && password != null)
             {
                 var user = await GetUser(id);
-                if (user != null)
+                if (user != null && user.Credentials.Login == login && user.Credentials.Password == password)
                 {
                     var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
