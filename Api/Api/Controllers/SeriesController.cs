@@ -6,14 +6,16 @@
     {
         private readonly ISeriesRepository _seriesRepository;
         private readonly IBaseRepository<Genre> _genresRepository;
+        private readonly IBaseRepository<Season> _seasonRepository;
         private readonly IEpisodesRepository _episodesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository, IEpisodesRepository episodesRepository,  IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository, IEpisodesRepository episodesRepository, IBaseRepository<Season> seasonRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
             _episodesRepository = episodesRepository;
+            _seasonRepository = seasonRepository;
             _mapper = mapper;
         }
 
@@ -77,7 +79,7 @@
         /// <response code="204">The genre has been added to serie</response>
         /// <response code="400">If the serie is null</response>
         /// <response code="400">If the genre is null</response>
-        [HttpPut("id/genres/{genreId}")]
+        [HttpPut("{id}/genres/{genreId}")]
         public async Task<IActionResult> AddGenreToSerial(int id, int genreId)
         {
             var serial = await _seriesRepository.RetrieveAsync(id);
@@ -91,7 +93,6 @@
                 return NotFound();
             }
             serial.SerieGenres.Add(genre);
-            genre.GenreSerie.Add(serial);
             await _seriesRepository.UpdateAsync(serial.SerieId, serial);
             await _seriesRepository.SaveChangesAsync();
             return NoContent();
@@ -107,8 +108,8 @@
         /// <response code="204">The genre has been deleted to serie</response>
         /// <response code="400">If the serie is null</response>
         /// <response code="400">If the genre is null</response>
-        [HttpDelete("id/genres/{genreId}")]
-        public async Task<IActionResult> DeleteGenreToSerial(int id, int genreId)
+        [HttpDelete("{id}/genres/{genreId}")]
+        public async Task<IActionResult> DeleteGenreFromSerial(int id, int genreId)
         {
             var serial = await _seriesRepository.RetrieveSerieWithGenresAsync(id);
             if (serial == null)
@@ -160,6 +161,63 @@
         }
 
 
+        /// <summary>
+        /// Add season to serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonsId"></param>
+        /// <returns>Updated list of seasons in specific serie </returns>
+        /// <response code="204">The season has been added to serie</response>
+        /// <response code="400">If the serie is null</response>
+        /// <response code="400">If the season is null</response>
+        [HttpPut("{id}/seasons/{seasonsId}")]
+        public async Task<IActionResult> AddSeasonToSerial(int id, int seasonsId)
+        {
+            var serial = await _seriesRepository.RetrieveAsync(id);
+            if (serial == null)
+            {
+                return NotFound();
+            }
+            var season = await _seasonRepository.RetrieveAsync(seasonsId);
+            if (season == null)
+            {
+                return NotFound();
+            }
+            serial.SerieSeasons.Add(season);
+            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            await _seriesRepository.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete season from serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <returns>Updated list of seasons in specific serie </returns>
+        /// <response code="204">The season has been deleted from serie</response>
+        /// <response code="400">If the serie is null</response>
+        /// <response code="400">If the season is null</response>
+        [HttpDelete("{id}/seasons/{seasonNumber}")]
+        public async Task<IActionResult> DeleteSeasonFromSerial(int id, int seasonNumber)
+        {
+            var serial = await _seriesRepository.RetrieveSerieWithSeasonsAsync(id);
+            if (serial == null)
+            {
+                return NotFound();
+            }
+
+            var season = serial.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+            {
+                return NotFound();
+            }
+
+            serial.SerieSeasons.Remove(season);
+            await _seriesRepository.UpdateAsync(serial.SerieId, serial);
+            await _seriesRepository.SaveChangesAsync();
+            return NoContent();
+        }
 
 
         /// <summary>
