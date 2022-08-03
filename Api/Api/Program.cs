@@ -18,6 +18,7 @@ builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 builder.Services.AddScoped<ISeasonsRepository, SeasonsRepository>();
 builder.Services.AddScoped<IEpisodesRepository, EpisodesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IGenresRepository, GenresRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
