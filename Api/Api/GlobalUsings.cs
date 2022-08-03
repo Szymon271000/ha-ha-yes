@@ -25,6 +25,5 @@ global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using Api.Data.Repository.Interfaces;
 global using System.ComponentModel.DataAnnotations;
-global using Api.Data.Repository.Interfaces;
 global using Microsoft.AspNetCore.JsonPatch;
-global using Api.Data.Repository;
+global using System.Web.Http.Cors;

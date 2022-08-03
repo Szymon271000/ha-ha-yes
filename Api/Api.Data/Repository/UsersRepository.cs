@@ -1,7 +1,4 @@
-﻿using Api.Data.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-
-namespace Api.Data.Repository;
+﻿namespace Api.Data.Repository;
 
 public class UsersRepository : IBaseRepository<User>, IUsersRepository
 {

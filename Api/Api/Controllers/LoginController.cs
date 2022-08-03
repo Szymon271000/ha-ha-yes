@@ -2,6 +2,7 @@
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors(origins: "http://mywebclient.azurewebsites.net", headers: "*", methods: "*")]
     public class LoginController : ControllerBase
     {
         public IConfiguration _configuration;
