@@ -12,7 +12,24 @@
             _mapper = mapper;
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Add new episode
+        /// </summary>
+        /// <returns>Add new episode</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///         "episodeNumber": 0,
+        ///         "episodeName": "Name of episode"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Created</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+
+    [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create(EpisodeCreateDTO newEpisode)
         {
@@ -20,6 +37,19 @@
             if (createdGenre == null) return BadRequest();
             return Ok();
         }
+
+        /// <summary>
+        /// Delete episode
+        /// </summary>
+        /// <returns>Delete episode</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
 
         [HttpDelete]
         [Route("{id}")]
@@ -30,6 +60,19 @@
             return NoContent();
         }
 
+        /// <summary>
+        /// Get episode by id
+        /// </summary>
+        /// <returns>Get episode by id</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -38,6 +81,12 @@
             if (soughtEpisode == null) return NotFound();
             return Ok(_mapper.Map<EpisodeGetDTO>(soughtEpisode));
         }
+
+        /// <summary>
+        /// Get all episodes
+        /// </summary>
+        /// <returns>Get all episodes</returns>
+        /// <response code="200">OK</response>
 
         [HttpGet]
         [Route("")]

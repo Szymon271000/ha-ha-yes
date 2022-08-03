@@ -1,6 +1,4 @@
-﻿
-
-namespace Api.Controllers
+﻿namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,6 +12,20 @@ namespace Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Add new actor
+        /// </summary>
+        /// <returns>Add new actor</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     Robert DeNiro
+        ///
+        /// </remarks>
+        /// <response code="201">Created</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create(string name)
@@ -22,6 +34,19 @@ namespace Api.Controllers
             if (createdGenre == null) return BadRequest();
             return Ok();
         }
+
+        /// <summary>
+        /// Delete actor
+        /// </summary>
+        /// <returns>Delete actor</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
 
         [HttpDelete]
         [Route("{id}")]
@@ -32,6 +57,19 @@ namespace Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Get actor by id
+        /// </summary>
+        /// <returns>Get actor by id</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -40,6 +78,12 @@ namespace Api.Controllers
             if (soughtActor == null) return NotFound();
             return Ok(_mapper.Map<ActorGetDTO>(soughtActor));
         }
+
+        /// <summary>
+        /// Get all actors
+        /// </summary>
+        /// <returns>Get all actors</returns>
+        /// <response code="200">OK</response>
 
         [HttpGet]
         [Route("")]

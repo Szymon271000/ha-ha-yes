@@ -12,6 +12,20 @@
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Add new genre
+        /// </summary>
+        /// <returns>Add new genre</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     Comedy
+        ///
+        /// </remarks>
+        /// <response code="201">Created</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+
         [HttpPost]
         [Route("", Name = "xyz")]
         public async Task<IActionResult> Create(string name)
@@ -20,6 +34,19 @@
             if (createdGenre == null) return BadRequest();
             return Ok();
         }
+
+        /// <summary>
+        /// Delete genre
+        /// </summary>
+        /// <returns>Delete genre</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
 
         [HttpDelete]
         [Route("{id}")]
@@ -30,6 +57,19 @@
             return NoContent();
         }
 
+        /// <summary>
+        /// Get genre by id
+        /// </summary>
+        /// <returns>Get genre by id</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -38,6 +78,12 @@
             if (soughtGenre == null) return NotFound();
             return Ok(_mapper.Map<GenreGetDTO>(soughtGenre));
         }
+
+        /// <summary>
+        /// Get all genres
+        /// </summary>
+        /// <returns>Get all genres</returns>
+        /// <response code="200">OK</response>
 
         [HttpGet]
         [Route("")]

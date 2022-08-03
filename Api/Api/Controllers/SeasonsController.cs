@@ -12,6 +12,22 @@ public class SeasonsController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Add new season
+    /// </summary>
+    /// <returns>Add new season</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     {
+    ///       "seasonNumber": 23
+    ///     }
+    ///
+    /// </remarks>
+    /// <response code="201">Created</response>
+    /// <response code="200">OK</response>
+    /// <response code="400">Bad request</response>
+
     [HttpPost]
     [Route("")]
     public async Task<IActionResult> Create(SeasonCreateDTO newSeason)
@@ -20,6 +36,19 @@ public class SeasonsController : ControllerBase
         if (createdSeason == null) return BadRequest();
         return Ok();
     }
+
+    /// <summary>
+    /// Delete season
+    /// </summary>
+    /// <returns>Delete season</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     23
+    ///
+    /// </remarks>
+    /// <response code="200">OK</response>
+    /// <response code="404">Not Found</response>
 
     [HttpDelete]
     [Route("{id}")]
@@ -30,6 +59,19 @@ public class SeasonsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Get season by id
+    /// </summary>
+    /// <returns>Get season by id</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     23
+    ///
+    /// </remarks>
+    /// <response code="200">OK</response>
+    /// <response code="404">Not Found</response>
+
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Get(int id)
@@ -38,6 +80,12 @@ public class SeasonsController : ControllerBase
         if (soughtSeason == null) return NotFound();
         return Ok(_mapper.Map<SeasonGetDTO>(soughtSeason));
     }
+
+    /// <summary>
+    /// Get all genres
+    /// </summary>
+    /// <returns>Get all seasons</returns>
+    /// <response code="200">OK</response>
 
     [HttpGet]
     [Route("")]

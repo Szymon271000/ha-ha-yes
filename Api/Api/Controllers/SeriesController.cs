@@ -66,6 +66,22 @@
             return Ok(_mapper.Map<SimpleSerieDTO>(serial));
         }
 
+        /// <summary>
+        /// Add new series
+        /// </summary>
+        /// <returns>Add new series</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///       "serieName": "Breaking Bad"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Created</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create(SerieCreateDto newSerie)
@@ -74,6 +90,19 @@
             if (createdSerie == null) return BadRequest();
             return Ok();
         }
+
+        /// <summary>
+        /// Delete series
+        /// </summary>
+        /// <returns>Delete series</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
 
         [HttpDelete]
         [Route("{id}")]
