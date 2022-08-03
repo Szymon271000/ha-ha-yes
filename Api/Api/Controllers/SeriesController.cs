@@ -6,12 +6,14 @@
     {
         private readonly ISeriesRepository _seriesRepository;
         private readonly IBaseRepository<Genre> _genresRepository;
+        private readonly IEpisodesRepository _episodesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository,  IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository, IEpisodesRepository episodesRepository,  IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
+            _episodesRepository = episodesRepository;
             _mapper = mapper;
         }
 
@@ -125,22 +127,7 @@
         }
 
 
-        /// <summary>
-        /// Get list of episodes by ID of target serie and number of target season
-        /// </summary>
-        /// <returns>Episodes of target season in DB</returns>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     GET 
-        ///     {
-        ///        "episodeNumber": "",
-        ///        "episodeName": "",
-        ///     }
-        ///
-        /// </remarks>
-        /// <response code="200">Returns Episodes of target season</response>
-        /// <response code="400">If the item is null</response>
+        
         [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
         public async Task<ActionResult<List<SimpleEpisodeDTO>>> GetEpisodesOfSeason(int id, int seasonNumber)
         {
@@ -150,6 +137,35 @@
             var episodesSorted = episodes.OrderBy(x => x.EpisodeNumber).ToList();
 
             return Ok(_mapper.Map<IEnumerable<SimpleEpisodeDTO>>(episodesSorted));
+        }
+
+        /// <summary>
+        /// Add target episode to the season of the target serie
+        /// </summary>
+        /// <returns>NoContent</returns>
+        /// <response code="204">If episode was added</response>
+        /// <response code="404">If any of the objects were not found</response>
+
+
+        [HttpPost("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
+        public async Task<ActionResult> AddEpisodeToSeason(int id, int seasonNumber, int episodeId)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = await _episodesRepository.RetrieveAsync(episodeId);
+            if (episode == null)
+                return NotFound();
+
+            season.SeasonEpisodes.Add(episode);
+            await _seriesRepository.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
