@@ -19,7 +19,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(s =>
 builder.Services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("ApiConnection")));
 builder.Services.AddScoped<IBaseRepository<Serie>, SeriesRepository>();
 builder.Services.AddScoped<IBaseRepository<Season>, SeasonsRepository>();
-builder.Services.AddScoped<IBaseRepository<Episode>, EpisodesRepository>();
+builder.Services.AddScoped<IEpisodesRepository, EpisodesRepository>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 builder.Services.AddScoped<IBaseRepository<Genre>, GenresRepository>();
 // Add services to the container.
