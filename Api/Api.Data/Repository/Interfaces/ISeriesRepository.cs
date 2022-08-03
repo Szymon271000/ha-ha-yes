@@ -5,5 +5,7 @@
         Task<Serie?> RetrieveWithSeasonsAndEpisodesAsync(int id);
 
         Task<Serie?> RetrieveSerieWithGenresAsync(int id);
+
+        Task<Serie?> RetrieveSerieWithSeasonsAsync(int id);
     }
 }

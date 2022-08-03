@@ -125,6 +125,41 @@
         }
 
 
+
+        /// <summary>
+        /// Get seasons of specific serie by id
+        /// </summary>
+        /// <returns>Seasons of specific serie in DB</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///        "SerieId": "",
+        ///        "SerieName": "",
+        ///        "Seasons":
+        ///        {
+        ///         "seasonNumber":
+        ///        }
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns seasons of specific serie</response>
+        /// <response code="400">If the item is null</response>
+        [HttpGet("{id}/seasons")]
+        public async Task<IActionResult> GetSerialWithSeasonsById(int id)
+        {
+            var serial = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            if (serial == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<SerieWithSeasonsDTO>(serial));
+        }
+
+
+
+
         /// <summary>
         /// Get list of episodes by ID of target serie and number of target season
         /// </summary>

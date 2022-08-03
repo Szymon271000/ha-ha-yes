@@ -18,3 +18,4 @@ global using AutoMapper;
 global using Api.Data.Repository;
 global using Api.Data.Repository.Interfaces;
 global using Api.DTOs.EpisodesDTOs;
+global using Api.DTOs.SeasonsDTOs;

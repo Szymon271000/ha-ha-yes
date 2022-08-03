@@ -32,8 +32,6 @@
     <Folder Include="DTOs\ActorsDTOs\" />
     <Folder Include="DTOs\EpisodesDTOs\" />
     <Folder Include="DTOs\GenresDTOs\" />
-    <Folder Include="DTOs\SeriesDTOs\" />
-    <Folder Include="DTOs\SeasonsDTOs\" />
     <Folder Include="MapperProfiles\" />
   </ItemGroup>
 

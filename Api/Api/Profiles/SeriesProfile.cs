@@ -7,6 +7,8 @@ namespace Api.Profiles
         public SeriesProfile()
         {
             CreateMap<Serie, SimpleSerieDTO>();
+            CreateMap<Serie, SerieWithSeasonsDTO>()
+                .ForMember(dest => dest.Seasons, opt => opt.MapFrom(src => src.SerieSeasons));
         }
     }
 }
