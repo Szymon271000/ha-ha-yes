@@ -127,12 +127,25 @@
         }
 
 
-        
+        /// <summary>
+        /// Get episodes of target season of the serie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <returns>List of episodes </returns>
+        /// <response code="200">When list of episodes was returned</response>
+        /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
         public async Task<ActionResult<List<SimpleEpisodeDTO>>> GetEpisodesOfSeason(int id, int seasonNumber)
         {
             Serie serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
+            if(serie == null)
+                return NotFound();
+
             var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
             List<Episode> episodes = season.SeasonEpisodes;
             var episodesSorted = episodes.OrderBy(x => x.EpisodeNumber).ToList();
 
@@ -142,6 +155,9 @@
         /// <summary>
         /// Add target episode to the season of the target serie
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeId"></param>
         /// <returns>NoContent</returns>
         /// <response code="204">If episode was added</response>
         /// <response code="404">If any of the objects were not found</response>
