@@ -13,7 +13,7 @@ public class SeasonsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("add")]
+    [Route("")]
     public async Task<IActionResult> Create(SeasonCreateDTO newSeason)
     {
         var createdSeason = await _repository.CreateAsync(_mapper.Map<Season>(newSeason));
@@ -22,7 +22,7 @@ public class SeasonsController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("remove")]
+    [Route("{id}")]
     public async Task<IActionResult> Remove(int id)
     {
         var result = await _repository.DeleteAsync(id);
@@ -31,7 +31,7 @@ public class SeasonsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("get/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> Get(int id)
     {
         var soughtSeason = await _repository.RetrieveAsync(id);
@@ -40,7 +40,7 @@ public class SeasonsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("get")]
+    [Route("")]
     public async Task<IActionResult> GetAll()
     {
         var fetchedSeasons = await _repository.RetrieveAllAsync();
@@ -86,4 +86,4 @@ public class SeasonsController : ControllerBase
             //await _repository.SaveChanges();
             return NoContent();
         }
-    }
+}
