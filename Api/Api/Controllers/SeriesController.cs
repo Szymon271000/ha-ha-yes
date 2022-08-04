@@ -5,12 +5,12 @@
     public class SeriesController : ControllerBase
     {
         private readonly ISeriesRepository _seriesRepository;
-        private readonly IBaseRepository<Genre> _genresRepository;
-        private readonly IBaseRepository<Season> _seasonRepository;
+        private readonly IGenresRepository _genresRepository;
+        private readonly ISeasonsRepository _seasonRepository;
         private readonly IEpisodesRepository _episodesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository, IEpisodesRepository episodesRepository, IBaseRepository<Season> seasonRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
@@ -398,7 +398,8 @@
         [Route("")]
         public async Task<IActionResult> Create(SerieCreateDto newSerie)
         {
-            var createdSerie = await _seriesRepository.CreateAsync(_mapper.Map<Serie>(newSerie));
+            var createdSerie = _mapper.Map<Serie>(newSerie);
+            await _seriesRepository.CreateAsync(createdSerie);
             if (createdSerie == null) return BadRequest();
             return Ok();
         }
