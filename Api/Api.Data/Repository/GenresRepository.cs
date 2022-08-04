@@ -43,7 +43,7 @@ namespace Api.Data.Repository
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<Genre?> UpdateAsync(int id, Genre entity)
+        public async Task<Genre?> UpdateAsync(Genre entity)
         {
             _context.Genres.Update(entity);
             int affectedRows = await SaveChangesAsync();

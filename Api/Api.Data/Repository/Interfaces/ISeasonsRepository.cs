@@ -7,6 +7,6 @@
         Task<IEnumerable<Season>> RetrieveAllAsync();
         Task<Season?> RetrieveAsync(int id);
         Task<int> SaveChangesAsync();
-        Task<Season?> UpdateAsync(int id, Season entity);
+        Task<Season?> UpdateAsync(Season entity);
     }
 }

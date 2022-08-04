@@ -25,9 +25,9 @@ namespace Api.Data.Repository
 
         public async Task<bool?> DeleteAsync(int id)
         {
-            Season? soughtEpisode = await _context.Seasons.FindAsync(id);
+            Episode? soughtEpisode = await _context.Episodes.FindAsync(id);
             if (soughtEpisode == null) return null;
-            _context.Seasons.Remove(soughtEpisode);
+            _context.Episodes.Remove(soughtEpisode);
             int affectedRows = await SaveChangesAsync();
             if (affectedRows == 1) return true;
             return null;
@@ -48,7 +48,7 @@ namespace Api.Data.Repository
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<Episode?> UpdateAsync(int id, Episode entity)
+        public async Task<Episode?> UpdateAsync(Episode entity)
         {
             _context.Episodes.Update(entity);
             int affectedRows = await SaveChangesAsync();

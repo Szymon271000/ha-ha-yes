@@ -7,6 +7,6 @@
         Task<IEnumerable<Genre>> RetrieveAllAsync();
         Task<Genre?> RetrieveAsync(int id);
         Task<int> SaveChangesAsync();
-        Task<Genre?> UpdateAsync(int id, Genre entity);
+        Task<Genre?> UpdateAsync(Genre entity);
     }
 }

@@ -26,7 +26,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "SerieId": "",
         ///        "SerieName": "",
@@ -51,7 +51,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "SerieId": "",
         ///        "SerieName": "",
@@ -60,6 +60,8 @@
         /// </remarks>
         /// <response code="200">Returns serie with specific ID</response>
         /// <response code="400">If the item is null</response>
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSerieById(int id)
         {
@@ -374,6 +376,93 @@
                 return NotFound();
 
             return _mapper.Map<SimpleEpisodeDTO>(episode);
+        }
+
+        /// <summary>
+        /// Add new series
+        /// </summary>
+        /// <returns>Add new series</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///       "serieName": "Breaking Bad"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Created</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Create(SerieCreateDto newSerie)
+        {
+            var createdSerie = await _seriesRepository.CreateAsync(_mapper.Map<Serie>(newSerie));
+            if (createdSerie == null) return BadRequest();
+            return Ok();
+        }
+
+        /// <summary>
+        /// Delete series
+        /// </summary>
+        /// <returns>Delete series</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     23
+        ///
+        /// </remarks>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var result = await _seriesRepository.DeleteAsync(id);
+            if (result == null) return NotFound();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update series name
+        /// </summary>
+        /// <returns>Update series name</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "op": "replace",
+        ///        "path": "SerieName",
+        ///        "value": "NewName"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">No content</response>
+        /// <response code="200">OK</response>
+        /// <response code="400">If the item is null</response>
+
+        //Patch api/series/{id}
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> PartialEntityUpdate(int id, JsonPatchDocument<SerieUpdateDto> patchDoc)
+        {
+            var modelFromRepo = await _seriesRepository.RetrieveAsync(id);
+            if (modelFromRepo == null)
+            {
+                return NotFound();
+            }
+            var entityToPatch = _mapper.Map<SerieUpdateDto>(modelFromRepo);
+            patchDoc.ApplyTo(entityToPatch, ModelState);
+            if (!TryValidateModel(entityToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(entityToPatch, modelFromRepo);
+            await _seriesRepository.UpdateAsync(modelFromRepo);
+            //await _repository.SaveChanges();
+            return NoContent();
         }
     }
 }

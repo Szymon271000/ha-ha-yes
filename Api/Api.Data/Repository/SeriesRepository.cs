@@ -70,5 +70,13 @@ public class SeriesRepository : ISeriesRepository
     {
         return await _context.Series.Include(x => x.SerieSeasons).Where(x => x.SerieId == id).FirstOrDefaultAsync();
     }
+
+    public async Task<Serie?> UpdateAsync(Serie entity)
+    {
+        _context.Series.Update(entity);
+        int affectedRows = await SaveChangesAsync();
+        if (affectedRows == 1) return entity;
+        return null;
+    }
 }
 

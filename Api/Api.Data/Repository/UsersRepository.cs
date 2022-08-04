@@ -1,14 +1,6 @@
-﻿using Api.Data.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Api.Data.Repository;
 
-namespace Api.Data.Repository;
-
-public class UsersRepository : IBaseRepository<User>
+public class UsersRepository : IBaseRepository<User>, IUsersRepository
 {
     private ApiContext _context;
     public UsersRepository(ApiContext injectedContext)
@@ -40,7 +32,7 @@ public class UsersRepository : IBaseRepository<User>
 
     public async Task<User?> RetrieveAsync(int id)
     {
-        return await _context.Users.FindAsync(id);
+        return await _context.Users.Include(u => u.Credentials).FirstOrDefaultAsync(u=>u.UserId==id);
     }
 
     public async Task<int> SaveChangesAsync()
@@ -48,7 +40,7 @@ public class UsersRepository : IBaseRepository<User>
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<User?> UpdateAsync(int id, User entity)
+    public async Task<User?> UpdateAsync(User entity)
     {
         _context.Users.Update(entity);
         int affectedRows = await SaveChangesAsync();

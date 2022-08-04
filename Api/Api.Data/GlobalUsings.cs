@@ -7,3 +7,5 @@ global using Api.Data.Context;
 global using Microsoft.EntityFrameworkCore.Infrastructure;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using System.Linq.Expressions;
+global using Api.Data.Repository.Interfaces;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;
