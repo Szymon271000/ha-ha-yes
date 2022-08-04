@@ -7,6 +7,7 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 builder.Logging.AddSeq();
+
 builder.Services.AddControllers().AddNewtonsoftJson(s =>
 {
     s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
