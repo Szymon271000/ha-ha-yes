@@ -295,7 +295,7 @@
         /// <response code="404">If any of the objects was not found</response>
 
 
-        [HttpPost("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
+        [HttpPut("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
         public async Task<ActionResult> AddEpisodeToSeason(int id, int seasonNumber, int episodeId)
         {
             var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
