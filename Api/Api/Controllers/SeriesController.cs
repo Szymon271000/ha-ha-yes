@@ -267,7 +267,7 @@
         /// <returns>List of episodes </returns>
         ///         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "id": "1"
         ///        "seasonNumber": "1",
@@ -368,7 +368,7 @@
         /// <returns>Target episode </returns>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///         "id": "1",
         ///         "seasonNumber": "1",
@@ -403,7 +403,7 @@
         /// <returns>List of actors</returns>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///         "id": "1",
         ///         "seasonNumber": "1",
