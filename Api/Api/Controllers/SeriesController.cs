@@ -8,14 +8,16 @@
         private readonly IGenresRepository _genresRepository;
         private readonly ISeasonsRepository _seasonRepository;
         private readonly IEpisodesRepository _episodesRepository;
+        private readonly IActorsRepository _actorRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IActorsRepository actorsRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
             _episodesRepository = episodesRepository;
             _seasonRepository = seasonRepository;
+            _actorRepository = actorsRepository;
             _mapper = mapper;
         }
 
@@ -429,6 +431,51 @@
             List<Actor> actors = episode.EpisodeActors;
 
             return Ok(_mapper.Map<IEnumerable<SimpleActorDTO>>(actors));
+        }
+
+
+        /// <summary>
+        /// Add actor to target episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <param name="actorId"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT 
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///         "actorId" : "1"
+        ///     }
+        /// </remarks>
+        /// <response code="204">When actor was added</response>
+        /// <response code="404">If any object doesn't exist</response>
+        [HttpPut("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors/{actorId}")]
+        public async Task<ActionResult> AddActorToEpisode(int id, int seasonNumber, int episodeNumber, int actorId)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAndActorsAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            var targetActor = await _actorRepository.RetrieveAsync(actorId);
+            if (targetActor == null)
+                return NotFound();
+
+            episode.EpisodeActors.Add(targetActor);
+            await _seasonRepository.SaveChangesAsync();
+            return NoContent();
         }
 
         /// <summary>
