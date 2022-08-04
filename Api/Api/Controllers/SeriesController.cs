@@ -267,14 +267,15 @@
         /// <param name="id"></param>
         /// <param name="seasonNumber"></param>
         /// <returns>List of episodes </returns>
-        ///         /// Sample request:
+        /// <params>
+        /// Sample request:
         ///
         ///     GET
         ///     {
         ///        "id": "1"
         ///        "seasonNumber": "1",
         ///     }
-        ///
+        ///</params> 
         /// <response code="200">When list of episodes was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
@@ -301,6 +302,16 @@
         /// <param name="seasonNumber"></param>
         /// <param name="episodeId"></param>
         /// <returns>NoContent</returns>
+        /// /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeId": "1"
+        ///     }
+        /// </remarks>
         /// <response code="204">If episode was added</response>
         /// <response code="404">If any of the objects was not found</response>
 
@@ -333,6 +344,16 @@
         /// <param name="seasonNumber"></param>
         /// <param name="episodeId"></param>
         /// <returns>NoContent</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeiD": "1"
+        ///     }
+        /// </remarks>
         /// <response code="204">If episode was deleted</response>
         /// <response code="404">If any of the objects was not found</response>
         [HttpDelete("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
@@ -368,6 +389,7 @@
         /// <param name="seasonNumber"></param>
         /// <param name="episodeNumber"></param>
         /// <returns>Target episode </returns>
+        /// <remarks>
         /// Sample request:
         ///
         ///     GET
@@ -376,6 +398,7 @@
         ///         "seasonNumber": "1",
         ///         "episodeNumber": "1"
         ///     }
+        /// </remarks>
         /// <response code="200">When target episode was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}")]
@@ -403,6 +426,7 @@
         /// <param name="seasonNumber"></param>
         /// <param name="episodeNumber"></param>
         /// <returns>List of actors</returns>
+        /// <remarks>
         /// Sample request:
         ///
         ///     GET
@@ -411,6 +435,7 @@
         ///         "seasonNumber": "1",
         ///         "episodeNumber": "1"
         ///     }
+        /// </remarks>
         /// <response code="200">When list of actors was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors")]
@@ -474,6 +499,50 @@
                 return NotFound();
 
             episode.EpisodeActors.Add(targetActor);
+            await _seasonRepository.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete actor from target episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <param name="actorId"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE 
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///         "actorId" : "1"
+        ///     }
+        /// </remarks>
+        /// <response code="204">When actor was deleted</response>
+        /// <response code="404">If any object doesn't exist or target episode does not contain target actor</response>
+        [HttpDelete("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors/{actorId}")]
+        public async Task<ActionResult> DeleteActorFromEpisode(int id, int seasonNumber, int episodeNumber, int actorId)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAndActorsAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            var targetActor = await _actorRepository.RetrieveAsync(actorId);
+            if (targetActor == null || !episode.EpisodeActors.Any(x => x.ActorId == actorId))
+                return NotFound();
+
+            episode.EpisodeActors.Remove(targetActor);
             await _seasonRepository.SaveChangesAsync();
             return NoContent();
         }
