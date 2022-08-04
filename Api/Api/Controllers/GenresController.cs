@@ -32,7 +32,10 @@
         {
             var createdGenre = await _repository.CreateAsync(new Genre() { GenreName = name });
             if (createdGenre == null) return BadRequest();
-            return Ok();
+
+            var entity = await _repository.RetrieveAsync(createdGenre.GenreId);
+            var readDto = _mapper.Map<GenreGetDTO>(entity);
+            return CreatedAtRoute(nameof(GetGenre), new { Id = readDto.GenreId }, readDto);
         }
 
         /// <summary>
@@ -71,8 +74,8 @@
         /// <response code="404">Not Found</response>
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [Route("{id}", Name = "GetGenre")]
+        public async Task<IActionResult> GetGenre(int id)
         {
             var soughtGenre = await _repository.RetrieveAsync(id);
             if (soughtGenre == null) return NotFound();

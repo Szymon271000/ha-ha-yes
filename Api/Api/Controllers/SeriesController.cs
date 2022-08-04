@@ -5,12 +5,12 @@
     public class SeriesController : ControllerBase
     {
         private readonly ISeriesRepository _seriesRepository;
-        private readonly IBaseRepository<Genre> _genresRepository;
-        private readonly IBaseRepository<Season> _seasonRepository;
+        private readonly IGenresRepository _genresRepository;
+        private readonly ISeasonsRepository _seasonRepository;
         private readonly IEpisodesRepository _episodesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository, IEpisodesRepository episodesRepository, IBaseRepository<Season> seasonRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
@@ -62,7 +62,7 @@
         /// <response code="400">If the item is null</response>
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name = "GetSerieById")]
         public async Task<IActionResult> GetSerieById(int id)
         {
             var serie = await _seriesRepository.RetrieveAsync(id);
@@ -139,7 +139,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "SerieId": "",
         ///        "SerieName": "",
@@ -233,7 +233,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "seasonNumber": "",
         ///     }
@@ -361,7 +361,7 @@
         /// <response code="200">When target episode was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}")]
-        public async Task<ActionResult<SimpleEpisodeDTO>> GetEpisodeFromSerie(int id, int seasonNumber, int episodeNumber) 
+        public async Task<ActionResult<SimpleEpisodeDTO>> GetEpisodeFromSerie(int id, int seasonNumber, int episodeNumber)
         {
             var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
             if (serie == null)
@@ -400,7 +400,9 @@
         {
             var createdSerie = await _seriesRepository.CreateAsync(_mapper.Map<Serie>(newSerie));
             if (createdSerie == null) return BadRequest();
-            return Ok();
+            var entity = await _seriesRepository.RetrieveAsync(createdSerie.SerieId);
+            var readDto = _mapper.Map<SimpleSerieDTO>(entity);
+            return CreatedAtRoute(nameof(GetSerieById), new { Id = readDto.SerieId }, readDto);
         }
 
         /// <summary>
