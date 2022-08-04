@@ -119,7 +119,7 @@
             {
                 return NotFound();
             }
-            var genre = await _genresRepository.RetrieveAsync(genreId);
+            var genre = serie.SerieGenres.Where(x => x.GenreId == genreId).FirstOrDefault();
             if (genre == null)
             {
                 return NotFound();
