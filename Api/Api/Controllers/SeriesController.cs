@@ -265,6 +265,14 @@
         /// <param name="id"></param>
         /// <param name="seasonNumber"></param>
         /// <returns>List of episodes </returns>
+        ///         /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///        "id": "1"
+        ///        "seasonNumber": "1",
+        ///     }
+        ///
         /// <response code="200">When list of episodes was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
@@ -358,6 +366,14 @@
         /// <param name="seasonNumber"></param>
         /// <param name="episodeNumber"></param>
         /// <returns>Target episode </returns>
+        /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///     }
         /// <response code="200">When target episode was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}")]
@@ -376,6 +392,43 @@
                 return NotFound();
 
             return _mapper.Map<SimpleEpisodeDTO>(episode);
+        }
+
+        /// <summary>
+        /// Get actors of target episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <returns>List of actors</returns>
+        /// Sample request:
+        ///
+        ///     GET 
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///     }
+        /// <response code="200">When list of actors was returned</response>
+        /// <response code="404">If any object doesn't exist</response>
+        [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors")]
+        public async Task<ActionResult<List<SimpleActorDTO>>> GetActorsFromEpisode(int id, int seasonNumber, int episodeNumber)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAndActorsAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            List<Actor> actors = episode.EpisodeActors;
+
+            return Ok(_mapper.Map<IEnumerable<SimpleActorDTO>>(actors));
         }
 
         /// <summary>

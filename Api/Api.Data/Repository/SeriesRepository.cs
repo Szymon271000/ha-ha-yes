@@ -47,6 +47,14 @@ public class SeriesRepository : ISeriesRepository
         .Where(x => x.SerieId == id)
         .FirstOrDefaultAsync();
 
+    public async Task<Serie?> RetrieveWithSeasonsAndEpisodesAndActorsAsync(int id)
+    => await _context.Series
+        .Include(x => x.SerieSeasons)
+        .ThenInclude(x => x.SeasonEpisodes)
+        .ThenInclude(x => x.EpisodeActors)
+        .Where(x => x.SerieId == id)
+        .FirstOrDefaultAsync();
+
 
     public async Task<Serie?> UpdateAsync(int id, Serie entity)
     {
