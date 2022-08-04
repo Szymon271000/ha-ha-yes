@@ -36,7 +36,9 @@
             if (login != null && password != null)
             {
                 var user = await GetUser(id);
-                if (user != null && user.Credentials.Login == login && user.Credentials.Password == password)
+                var hashedLogin = Hashing.ComputeSha256Hash(login);
+                var hashedPassword = Hashing.ComputeSha256Hash(password);
+                if (user != null && user.Credentials.Login == hashedLogin && user.Credentials.Password == hashedPassword)
                 {
                     var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
