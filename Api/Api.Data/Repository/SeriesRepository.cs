@@ -86,5 +86,16 @@ public class SeriesRepository : ISeriesRepository
         if (affectedRows == 1) return entity;
         return null;
     }
+
+    public async Task<IEnumerable<Serie>> GetSeries(SerieParameter serieParameters)
+    {
+        var result = await _context.Series
+            .OrderBy(series => series.SerieName)
+            .Skip((serieParameters.PageNumber - 1) * serieParameters.PageSize)
+            .Take(serieParameters.PageSize)
+            .ToListAsync();
+
+        return result;
+    }
 }
 

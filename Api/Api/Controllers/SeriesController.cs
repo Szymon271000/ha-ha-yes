@@ -636,5 +636,13 @@
             //await _repository.SaveChanges();
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("paginate")]
+        public async Task<IActionResult> GetSeries([FromQuery] SerieParameter serieParameter)
+        {
+            var paginatedSeries = await _seriesRepository.GetSeries(serieParameter);
+            return Ok(_mapper.Map<IEnumerable<SimpleSerieDTO>>(paginatedSeries));
+        }
     }
 }
