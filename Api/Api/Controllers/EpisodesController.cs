@@ -1,7 +1,9 @@
-﻿namespace Api.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class EpisodesController : ControllerBase
     {
         private readonly IEpisodesRepository _repository;

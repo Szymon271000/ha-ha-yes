@@ -1,9 +1,11 @@
-﻿using Api.Data.Model.PaginationModel;
+using Api.Data.Model.PaginationModel;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class SeriesController : ControllerBase
     {
         private readonly ISeriesRepository _seriesRepository;
