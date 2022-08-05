@@ -1,16 +1,19 @@
-﻿namespace Api.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class SeriesController : ControllerBase
     {
         private readonly ISeriesRepository _seriesRepository;
-        private readonly IBaseRepository<Genre> _genresRepository;
-        private readonly IBaseRepository<Season> _seasonRepository;
+        private readonly IGenresRepository _genresRepository;
+        private readonly ISeasonsRepository _seasonRepository;
         private readonly IEpisodesRepository _episodesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IBaseRepository<Genre> genresRepository, IEpisodesRepository episodesRepository, IBaseRepository<Season> seasonRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
