@@ -1,7 +1,4 @@
-﻿using Api.Data.Model;
-using Api.Data.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-
+﻿using Api.Data.Model.PaginationModel;
 namespace Api.Data.Repository;
 
 public class SeriesRepository : ISeriesRepository

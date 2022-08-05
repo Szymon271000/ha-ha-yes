@@ -1,4 +1,6 @@
-﻿namespace Api.Data.Repository.Interfaces
+﻿using Api.Data.Model.PaginationModel;
+
+namespace Api.Data.Repository.Interfaces
 {
     public interface ISeriesRepository : IBaseRepository<Serie>
     {
