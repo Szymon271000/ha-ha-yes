@@ -19,7 +19,7 @@
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST 
+        ///     POST
         ///     {
         ///        "Id: "",
         ///        "Login": "",

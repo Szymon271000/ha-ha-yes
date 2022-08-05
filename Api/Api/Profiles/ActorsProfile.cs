@@ -8,6 +8,7 @@ namespace Api.Profiles
             CreateMap<Actor, ActorGetDTO>();
             CreateMap<ActorGetDTO, Actor>();
             CreateMap<ActorUpdateDto, Actor>().ReverseMap();
+            CreateMap<Actor, SimpleActorDTO>();
         }
     }
 }

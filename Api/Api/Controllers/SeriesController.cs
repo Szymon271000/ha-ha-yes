@@ -11,14 +11,16 @@ namespace Api.Controllers
         private readonly IGenresRepository _genresRepository;
         private readonly ISeasonsRepository _seasonRepository;
         private readonly IEpisodesRepository _episodesRepository;
+        private readonly IActorsRepository _actorRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IGenresRepository genresRepository, IEpisodesRepository episodesRepository, ISeasonsRepository seasonRepository, IActorsRepository actorsRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
             _genresRepository = genresRepository;
             _episodesRepository = episodesRepository;
             _seasonRepository = seasonRepository;
+            _actorRepository = actorsRepository;
             _mapper = mapper;
         }
 
@@ -65,7 +67,7 @@ namespace Api.Controllers
         /// <response code="400">If the item is null</response>
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name = "GetSerieById")]
         public async Task<IActionResult> GetSerieById(int id)
         {
             var serie = await _seriesRepository.RetrieveAsync(id);
@@ -122,7 +124,7 @@ namespace Api.Controllers
             {
                 return NotFound();
             }
-            var genre = await _genresRepository.RetrieveAsync(genreId);
+            var genre = serie.SerieGenres.Where(x => x.GenreId == genreId).FirstOrDefault();
             if (genre == null)
             {
                 return NotFound();
@@ -142,7 +144,7 @@ namespace Api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "SerieId": "",
         ///        "SerieName": "",
@@ -236,7 +238,7 @@ namespace Api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET 
+        ///     GET
         ///     {
         ///        "seasonNumber": "",
         ///     }
@@ -268,6 +270,15 @@ namespace Api.Controllers
         /// <param name="id"></param>
         /// <param name="seasonNumber"></param>
         /// <returns>List of episodes </returns>
+        /// <params>
+        /// Sample request:
+        ///
+        ///     GET
+        ///     {
+        ///        "id": "1"
+        ///        "seasonNumber": "1",
+        ///     }
+        ///</params> 
         /// <response code="200">When list of episodes was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes")]
@@ -294,11 +305,21 @@ namespace Api.Controllers
         /// <param name="seasonNumber"></param>
         /// <param name="episodeId"></param>
         /// <returns>NoContent</returns>
+        /// /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeId": "1"
+        ///     }
+        /// </remarks>
         /// <response code="204">If episode was added</response>
         /// <response code="404">If any of the objects was not found</response>
 
 
-        [HttpPost("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
+        [HttpPut("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
         public async Task<ActionResult> AddEpisodeToSeason(int id, int seasonNumber, int episodeId)
         {
             var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
@@ -326,6 +347,16 @@ namespace Api.Controllers
         /// <param name="seasonNumber"></param>
         /// <param name="episodeId"></param>
         /// <returns>NoContent</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeiD": "1"
+        ///     }
+        /// </remarks>
         /// <response code="204">If episode was deleted</response>
         /// <response code="404">If any of the objects was not found</response>
         [HttpDelete("{id}/seasons/{seasonNumber}/episodes/{episodeId}")]
@@ -361,10 +392,20 @@ namespace Api.Controllers
         /// <param name="seasonNumber"></param>
         /// <param name="episodeNumber"></param>
         /// <returns>Target episode </returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///     }
+        /// </remarks>
         /// <response code="200">When target episode was returned</response>
         /// <response code="404">If any object doesn't exist</response>
         [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}")]
-        public async Task<ActionResult<SimpleEpisodeDTO>> GetEpisodeFromSerie(int id, int seasonNumber, int episodeNumber) 
+        public async Task<ActionResult<SimpleEpisodeDTO>> GetEpisodeFromSerie(int id, int seasonNumber, int episodeNumber)
         {
             var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAsync(id);
             if (serie == null)
@@ -379,6 +420,134 @@ namespace Api.Controllers
                 return NotFound();
 
             return _mapper.Map<SimpleEpisodeDTO>(episode);
+        }
+
+        /// <summary>
+        /// Get actors of target episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <returns>List of actors</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///     }
+        /// </remarks>
+        /// <response code="200">When list of actors was returned</response>
+        /// <response code="404">If any object doesn't exist</response>
+        [HttpGet("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors")]
+        public async Task<ActionResult<List<SimpleActorDTO>>> GetActorsFromEpisode(int id, int seasonNumber, int episodeNumber)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAndActorsAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            List<Actor> actors = episode.EpisodeActors;
+
+            return Ok(_mapper.Map<IEnumerable<SimpleActorDTO>>(actors));
+        }
+
+
+        /// <summary>
+        /// Add actor to target episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <param name="actorId"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT 
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///         "actorId" : "1"
+        ///     }
+        /// </remarks>
+        /// <response code="204">When actor was added</response>
+        /// <response code="404">If any object doesn't exist</response>
+        [HttpPut("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors/{actorId}")]
+        public async Task<ActionResult> AddActorToEpisode(int id, int seasonNumber, int episodeNumber, int actorId)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAndActorsAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            var targetActor = await _actorRepository.RetrieveAsync(actorId);
+            if (targetActor == null)
+                return NotFound();
+
+            episode.EpisodeActors.Add(targetActor);
+            await _seasonRepository.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete actor from target episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="seasonNumber"></param>
+        /// <param name="episodeNumber"></param>
+        /// <param name="actorId"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE 
+        ///     {
+        ///         "id": "1",
+        ///         "seasonNumber": "1",
+        ///         "episodeNumber": "1"
+        ///         "actorId" : "1"
+        ///     }
+        /// </remarks>
+        /// <response code="204">When actor was deleted</response>
+        /// <response code="404">If any object doesn't exist or target episode does not contain target actor</response>
+        [HttpDelete("{id}/seasons/{seasonNumber}/episodes/{episodeNumber}/actors/{actorId}")]
+        public async Task<ActionResult> DeleteActorFromEpisode(int id, int seasonNumber, int episodeNumber, int actorId)
+        {
+            var serie = await _seriesRepository.RetrieveWithSeasonsAndEpisodesAndActorsAsync(id);
+            if (serie == null)
+                return NotFound();
+
+            var season = serie.SerieSeasons.Where(x => x.SeasonNumber == seasonNumber).FirstOrDefault();
+            if (season == null)
+                return NotFound();
+
+            var episode = season.SeasonEpisodes.Where(x => x.EpisodeNumber == episodeNumber).FirstOrDefault();
+            if (episode == null)
+                return NotFound();
+
+            var targetActor = await _actorRepository.RetrieveAsync(actorId);
+            if (targetActor == null || !episode.EpisodeActors.Any(x => x.ActorId == actorId))
+                return NotFound();
+
+            episode.EpisodeActors.Remove(targetActor);
+            await _seasonRepository.SaveChangesAsync();
+            return NoContent();
         }
 
         /// <summary>
@@ -401,9 +570,12 @@ namespace Api.Controllers
         [Route("")]
         public async Task<IActionResult> Create(SerieCreateDto newSerie)
         {
-            var createdSerie = await _seriesRepository.CreateAsync(_mapper.Map<Serie>(newSerie));
+            var createdSerie = _mapper.Map<Serie>(newSerie);
+            await _seriesRepository.CreateAsync(createdSerie);
             if (createdSerie == null) return BadRequest();
-            return Ok();
+            var entity = await _seriesRepository.RetrieveAsync(createdSerie.SerieId);
+            var readDto = _mapper.Map<SimpleSerieDTO>(entity);
+            return CreatedAtRoute(nameof(GetSerieById), new { Id = readDto.SerieId }, readDto);
         }
 
         /// <summary>

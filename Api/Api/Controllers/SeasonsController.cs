@@ -34,7 +34,10 @@ public class SeasonsController : ControllerBase
     {
         var createdSeason = await _repository.CreateAsync(_mapper.Map<Season>(newSeason));
         if (createdSeason == null) return BadRequest();
-        return Ok();
+
+        var entity = await _repository.RetrieveAsync(createdSeason.SeasonId);
+        var readDto = _mapper.Map<SeasonGetDTO>(entity);
+        return CreatedAtRoute(nameof(GetSeason), new { Id = readDto.SeasonId }, readDto);
     }
 
     /// <summary>
@@ -73,8 +76,8 @@ public class SeasonsController : ControllerBase
     /// <response code="404">Not Found</response>
 
     [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> Get(int id)
+    [Route("{id}", Name = "GetSeason")]
+    public async Task<IActionResult> GetSeason(int id)
     {
         var soughtSeason = await _repository.RetrieveAsync(id);
         if (soughtSeason == null) return NotFound();
