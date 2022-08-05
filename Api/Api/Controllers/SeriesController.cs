@@ -637,6 +637,24 @@
             return NoContent();
         }
 
+        /// <summary>
+        /// Get all series with Name and Ids paginated
+        /// </summary>
+        /// <param name="serieParameter.PageNumber"></param>
+        /// <param name="serieParameter.PageSize"></param>
+        /// <returns>All series in DB</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET
+        ///     {
+        ///        "SerieId": "",
+        ///        "SerieName": "",
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns all series</response>
+        /// <response code="400">If the item is null</response>
         [HttpGet]
         [Route("paginate")]
         public async Task<IActionResult> GetSeries([FromQuery] SerieParameter serieParameter)
