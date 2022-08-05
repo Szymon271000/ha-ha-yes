@@ -1,4 +1,4 @@
-﻿namespace Api.Data.Repository;
+﻿namespace Api.Data.Model.PaginationModel;
 
 public class SerieParameter
 {

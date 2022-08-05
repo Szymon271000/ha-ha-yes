@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers
+﻿using Api.Data.Model.PaginationModel;
+
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
